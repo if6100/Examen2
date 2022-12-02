@@ -1,157 +1,101 @@
 import java.time.LocalDateTime;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.time.format.DateTimeFormatter;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
-// @author Jose Isaac Lazo
-
-public class AguinaldoIT {
-    public AguinaldoIT() {
-    }
-
-//////////////////////////    Test valores limites correctos   ///////////////////////////////////////////////////////////////////////////////////
+/**
+ *
+ * @author Daniel Chanto Rojas
+ */
+public class AguinaldoTest {
     
-    //Este test es para saber la cantidad de aguinaldo que se recibe con un mes de trabajo
+    public AguinaldoTest() {
+    }    
+    
+    /**
+     * Test of main method, of class Aguinaldo.
+     */
     @Test
-    public void testFindbonus1month() {
+    public void testMain() {
+        System.out.println("main");
+        String[] args = null;
+        Aguinaldo.main(args);               
+    }
+    
+    
+    //Tests particionamiento equivalente
+    @Test
+    public void testFindbonus() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2021,12,30,10,30);
-        float amount = 1000000;
-        float expResult = 83333.336F;
+        LocalDateTime startDate = LocalDateTime.parse("2021-12-01 10:30" , formatter);
+        LocalDateTime endDate = LocalDateTime.parse("2022-11-30 10:30", formatter);
+        float amount = 250000;
+        float expResult = -2;
         float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
-    }
-    @Test
-    public void testBonus1month() {
-        System.out.println("bonus");
-        long moth = 01;
-        float amount = 1000000;
-        float expResult = 83333.336F;
-        float result = Aguinaldo.bonus(moth, amount);
         assertEquals(expResult, result, 0.0);
+        
     }
     
-    //Este test muestra la cantidad de dinero que se recibe de aguinaldo con 12 meses de trabajo
     @Test
-    public void testFindbonus12month() {
+    public void testFindbonus2() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2022,11,30,10,30);
-        float amount = 1000000;
-        float expResult = 1000000;
-        float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
-    }
-    @Test
-    public void testBonus12month() {
-        System.out.println("bonus");
-        long moth = 12;
-        float amount = 1000000;
-        float expResult = 1000000;
-        float result = Aguinaldo.bonus(moth, amount);
-        assertEquals(expResult, result, 0.0);
-    }
-    
-    //Este test muestra la cantidad de dinero que se recibe de aguinaldo con 12 meses de trabajo y con un salario minimo de 300 000
-    @Test
-    public void testFindbonusSalarioMinimo() {
-        System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2022,11,30,10,30);
-        float amount = 300000;
-        float expResult = 300000;
-        float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
-    }
-    @Test
-    public void testBonusSalarioMinimo() {
-        System.out.println("bonus");
-        long moth = 12;
-        float amount = 300000;
-        float expResult = 300000;
-        float result = Aguinaldo.bonus(moth, amount);
-        assertEquals(expResult, result, 0.0);
-    }
-    
-/////////////////////////// Test valores limites incorrectos  ///////////////////////////////////////////////////////////////////////
-    
-    //Este test muestra la cantidad de dinero que se recibe de aguinaldo con trabajar 0 meses
-    @Test
-    public void testFindbonus0month() {
-        System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2021,12,01,10,30);
-        float amount = 1000000;
-        float expResult = 83333.336F; //Se recibe la cantidad igual a la de un mes aunque no se haya trabajado todo el mes completo.
-        float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
-    }
-    @Test
-    public void testBonus0month() {
-        System.out.println("bonus");
-        long moth = 0;
-        float amount = 1000000;
-        float expResult = 0;
-        float result = Aguinaldo.bonus(moth, amount);
-        assertEquals(expResult, result, 0.0);
-    }
-    
-    //Este test muestra la cantidad de dinero que se recibe de aguinaldo con trabajar 13 meses
-    @Test
-    public void testFindbonus13month() {
-        System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2022,12,30,10,30);
-        float amount = 1000000;
-        float expResult = 1083333.4f;
-        float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
-    }
-    @Test
-    public void testBonus13month() {
-        System.out.println("bonus");
-        long moth = 13;
-        float amount = 1000000;
-        float expResult = 1083333.4F;
-        float result = Aguinaldo.bonus(moth, amount);
-        assertEquals(expResult, result, 0.0);
-    }
-  
-    //Este test muestra el error -1 ya que la fecha inicial es posterior a la fecha de fin del cálculo del bono,
-    //en este caso se puso que inicia en diciembre y termina en noviembre, los dos del mismo anno
-    @Test
-    public void testFindbonusMenos1() {
-        System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2021,11,01,10,30);
-        float amount = 1000000;
+        LocalDateTime startDate = LocalDateTime.parse("2023-11-30 10:30" , formatter);
+        LocalDateTime endDate = LocalDateTime.parse("2022-12-01 10:30", formatter);
+        float amount = 350000;
         float expResult = -1;
         float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
+        assertEquals(expResult, result, 0.0);
+        
     }
     
-    //Este test muestra el error -2 ya que el monto calcular el bono debe ser superior o igual 300 000 y se digita un salario de 299 999
     @Test
-    public void testFindbonusMenosSalarioMinimo() {
+    public void testFindbonus3() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,12,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2022,11,30,10,30);
+        LocalDateTime startDate = LocalDateTime.parse("2022-10-01 10:30" , formatter);
+        LocalDateTime endDate = LocalDateTime.parse("2023-11-30 10:30", formatter);
+        float amount = 300000;
+        float expResult = -3;
+        float result = Aguinaldo.findbonus(startDate, endDate, amount);
+        assertEquals(expResult, result, 0.0);
+        
+    }
+    
+    
+    //Tests Valores límite
+    
+    @Test
+    public void testFindbonus4() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        System.out.println("findbonus");
+        LocalDateTime startDate = LocalDateTime.parse("2021-12-01 10:30" , formatter);
+        LocalDateTime endDate = LocalDateTime.parse("2022-11-30 10:30", formatter);
         float amount = 299999;
         float expResult = -2;
         float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
+        assertEquals(expResult, result, 0.0);
     }
-
-    //Este test muestra el error -3 ya que la fecha inicio no está rango adecuado 
-    //porque el mes es previo a diciembre del año anterior de cálculo y se esta digitando el mes de noviembre.
+    
     @Test
-    public void testFindbonusMenos3() {
+    public void testFindbonus5() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("findbonus");
-        LocalDateTime startDate = LocalDateTime.of(2021,11,01,10,30);
-        LocalDateTime endDate = LocalDateTime.of(2022,03,01,10,30);
-        float amount = 1000000;
-        float expResult = -3;
+        LocalDateTime startDate = LocalDateTime.parse("2021-12-01 10:30" , formatter);
+        LocalDateTime endDate = LocalDateTime.parse("2022-11-30 10:30", formatter);
+        float amount = 300001;
+        float expResult = 25000;
         float result = Aguinaldo.findbonus(startDate, endDate, amount);
-        assertEquals(expResult, result, 0);
+        assertEquals(expResult, result, 0.0);
     }
+    
+    
+
+    
+    
 }
