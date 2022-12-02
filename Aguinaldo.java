@@ -8,7 +8,7 @@ public class Aguinaldo {
     public static float findbonus(LocalDateTime startDate, LocalDateTime endDate, float amount ){
         if( amount >= 300000) {
             if(startDate.isAfter(endDate)){
-                return -1; // no cumple salario minimo requerido
+                return -1; // no cumple salario minimo 
             } else {
                 if(! startDate.getMonth().equals(Month.DECEMBER) && (endDate.getYear() - startDate.getYear()) >=1 ) {
                     return -3; // el aguinaldo se calcula con el mes anterior del anno solamente
